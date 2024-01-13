@@ -4,6 +4,7 @@ import { getDocument } from "pdfjs-dist/legacy/build/pdf";
 const ReadSource = ({ fileUrl, handleDataRead, setProcessing }) => {
   const numFactDataRef = useRef([]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchData = async () => {
       if (!fileUrl) {
@@ -36,7 +37,7 @@ const ReadSource = ({ fileUrl, handleDataRead, setProcessing }) => {
           console.log(text);
 
           // Trouver les numéros de facture
-          const regex = /FACTURE N° FA(\d{5})/g;
+          const regex = /FACTURE N° (FA\d{5})/g;
           let match;
           while ((match = regex.exec(text)) !== null) {
             console.log("Match Fact");
@@ -59,6 +60,7 @@ const ReadSource = ({ fileUrl, handleDataRead, setProcessing }) => {
     if (fileUrl) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileUrl]);
 
   return null; // Ou affichez quelque chose d'autre si nécessaire

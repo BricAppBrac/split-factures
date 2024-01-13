@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReadSource from "./ReadSource";
 import GenerateZip from "./GenerateZip";
 
@@ -7,6 +7,7 @@ const UploadSource = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const [processing, setProcessing] = useState(false);
   const refFactData = useRef([]);
+  const [refFact, setRefFact] = useState([]);
 
   // Stocke le fichier sélectionné url et name
   const handleFileChange = (event) => {
@@ -49,9 +50,24 @@ const UploadSource = () => {
     // Mettre à jour refFactData.current avec le nouveau tableau
     // refFactData.current = factDataArray;
     console.log("factures triées");
-    console.log(refFactData);
+    console.log(refFactData.current);
+    // Créer un tableau de paires numéro de facture et nombre de pages
+    const pairArray = refFactData.current.map(({ numFacture, pages }) => [
+      numFacture,
+      pages,
+    ]);
+
+    console.log("pairArray");
+    console.log(pairArray);
+
+    setRefFact(pairArray);
+
     setProcessing(false);
   };
+
+  useEffect(() => {
+    console.log("refFact.length dans useEffect", refFact.length);
+  }, [refFact]);
 
   return (
     <div className="upload-content">
@@ -86,8 +102,8 @@ const UploadSource = () => {
         )}
       </div>
       <div className="generate-zip">
-        {refFactData.current.length > 0 && (
-          <GenerateZip refFactData={refFactData.current} />
+        {refFact.length > 0 && (
+          <GenerateZip refFact={refFact} fileUrl={fileUrl} />
         )}
       </div>
     </div>
